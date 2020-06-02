@@ -1,0 +1,1 @@
+This directory contains new data with binary images of the shape of the dyke.
