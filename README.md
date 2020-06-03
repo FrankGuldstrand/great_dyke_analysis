@@ -17,12 +17,14 @@ Matlab <br>
 Natsortfiles see(citation) <br>
 
 ## Data
+Sets of coordinates from profiles along mapped dyke according segment.
 
 ## Code Description
-    Test for Code Block
+The main script is dykeprof.m this accesses load_data.m, calculate_thickness and section_distance.m
 
 ## Example / Tutorial
 The structure is as follows:
+    Test for Code Block
 
 ### Citations
 Stephen Cobeldick (2020). Natural-Order Filename Sort (https://www.mathworks.com/matlabcentral/fileexchange/47434-natural-order-filename-sort), MATLAB Central File Exchange. Retrieved June 3, 2020.
