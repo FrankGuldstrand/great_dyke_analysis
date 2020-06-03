@@ -86,9 +86,9 @@ subplot(2,2,2) % Plot of Width
             % Plot of Sections
             plot([thickness(j,3),thickness(j,5)],[thickness(j,4),thickness(j,6)],'k'); 
             
-            %if isnan(thickness(j,2)) ==0
-            %   plot([thickness(j,3),thickness(j,5)],[thickness(j,4),thickness(j,6)],'k'); 
-            %end
+            if isnthickness(j,2) ~=NaN
+               plot([thickness(j,3),thickness(j,5)],[thickness(j,4),thickness(j,6)],'k'); 
+            end
             
             if j==1
             str=['P',num2str(thickness(j,9)),'S',num2str(thickness(j,8))];   
