@@ -1,7 +1,7 @@
 # Great_dyke_analysis
 
 ## Authors & Collaborators
-Frank Guldstrand
+Frank Guldstrand <br>
 Tobias Schmiedel
 
 ## Purpose
