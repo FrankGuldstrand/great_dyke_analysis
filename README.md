@@ -12,6 +12,9 @@ NB! Parameters in brakets are not implemented yet.
 ## License
 
 ## Dependencies
+Move (generates data for the analysis from mapped dyke)
+Matlab
+Natsortfiles
 
 ## Data
 
