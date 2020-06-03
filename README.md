@@ -5,7 +5,9 @@ Frank Guldstrand <br>
 Tobias Schmiedel
 
 ## Purpose
-This analyses the thickness of the great dyke in argenina.
+This analysis is to quantitatively assess the geometry of dykes. We are using a case study with dykes from Argentina, however given a similar data input, it should be usable to analyse field data.
+In detail: segment length, segment thickness, (tip geometry), (segment overlap), (segment relay zones),...
+NB! Parameters in brakets are not implemented yet.
 
 ## License
 
@@ -20,4 +22,4 @@ This analyses the thickness of the great dyke in argenina.
 The structure is as follows:
 
 ### Citations
-![Image of Stone](https://github.com/FrankGuldstrand/great_dyke_analysis/blob/master/shape_data/WIN_20191017_08_56_38_Pro.jpg)
+Stephen Cobeldick (2020). Natural-Order Filename Sort (https://www.mathworks.com/matlabcentral/fileexchange/47434-natural-order-filename-sort), MATLAB Central File Exchange. Retrieved June 3, 2020.
