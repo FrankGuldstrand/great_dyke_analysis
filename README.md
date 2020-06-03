@@ -7,6 +7,8 @@ Tobias Schmiedel
 ## Purpose
 This analyses the thickness of the great dyke in argenina.
 
+## License
+
 ## Dependencies
 
 ## Data
