@@ -20,7 +20,8 @@ Natsortfiles see(citation) <br>
 Sets of coordinates from profiles along mapped dyke according segment.
 
 ## Code Description
-The main script is dykeprof.m this accesses load_data.m, calculate_thickness and section_distance.m
+The main script is dykeprof.m this accesses load_data.m, calculate_thickness.m and section_distance.m
+natsort.m is used for sorting the files alphanumerically.
 
 ## Example / Tutorial
 The structure is as follows:
