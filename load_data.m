@@ -10,24 +10,6 @@ files=struct2table(dir(path));  % cell with list of files in FullData directory
 files=files(3:end,:);
 files = natsortfiles(files.name);  % Use dependencey natsortfiles to sort
 
-% % Find Unique Profile Sections in FullData director
-for i=1:length(files)
-    temp=split(files{i},'S')';
-    
-    if i == 1 %starting point first entry
-    n=1; % Counter
-    lsid(n)=temp(1); % Store first profile value
-    temp1=temp(1); % Save the value temporarily for comparison
-    clear temp % clear current value
-    elseif temp ~= temp1 % If a new profile store value
-    n=n+1; % add counter
-    lsid(n)=temp(1); % save profile section
-    temp1=temp(1); % store variable for comparison
-    clear temp % clear temp
-    end    
-   
-end; clear i n temp temp1
-
   
 %% Data Loading
 
