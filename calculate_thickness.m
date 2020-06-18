@@ -16,11 +16,13 @@
    Col  9 y2
    Col 10 x3
    Col 11 y3 
+   Col 12 x4
+   Col 13 y4
    .. additional coordinates 
 %}
 %%
 % % Creating Variable Space
-thickness=zeros(length(files),11); % create a column vector of zeros  
+thickness=zeros(length(files),13); % create a column vector of zeros  
        
 % NaN for identification of no split scenarioes
 thickness(:,2)=NaN; % Secondary thickness
@@ -64,7 +66,10 @@ for j=1:1:length(files)
       
     l=mod(size(data{j}),2); % checks if there an even amount of coordinates
   
-    if l(1)==0 % EVEN    
+    %% EVEN Number of coordinates
+    if l(1)==0 
+        if nr_of_splits(j)==0 % ONLY ONE INTRUSION
+            
        for i=1:2:length(data{j}) % go through pair 1 and pair 2    
             % Calculate width of dyke   
             xl=coord(i,1)-coord(i+1,1); % length in x
@@ -82,8 +87,95 @@ for j=1:1:length(files)
         thickness(j,6:7)=[coord(1,1),coord(1,2)];
         thickness(j,8:9)=[coord(2,1),coord(2,2)];
         clear coord
-       
-    elseif l(1)==1 % ODD = 3 coordinates
+        
+        elseif nr_of_splits(j,1)==2 % TWO INTRUSIONS separated by gap
+            % find largest difference between the sets of coordinates
+            k=abs(diff(coord))==max(max(abs(diff(coord))));
+             if k(1,1)==1 % 1st pair of coordinates are main thickness
+                nr_of_splits(j,2)=1; % store first set is largest 
+                
+          for m=1:2:3   
+          xl=coord(m,1)-coord(m+1,1); % length in x
+          yl=coord(m,2)-coord(m+1,2); % length in y          
+          cl=sqrt(xl^2 + yl^2); % WIDTH
+          
+          ord=[1,NaN,2];
+          thickness(j,ord(m))=cl; % store width calculations
+          clear cl xl yl 
+          end; clear m ord
+          
+          % Store coordinates in regular order
+          thickness(j,6:7)=[coord(1,1),coord(1,2)];
+          thickness(j,8:9)=[coord(2,1),coord(2,2)];
+          thickness(j,10:11)=[coord(3,1),coord(3,2)];
+          thickness(j,12:13)=[coord(4,1),coord(4,2)];
+          
+             elseif k(2,1)==1 % 2nd pair of coordinates are main thickness
+                 nr_of_splits(j,2)=2; % store 2nd set is largest
+                   
+                   xl=coord(2,1)-coord(3,1); % length in x
+                   yl=coord(2,2)-coord(3,2); % length in y          
+                   cl=sqrt(xl^2 + yl^2); % WIDTH
+
+                   thickness(j,1)=cl; % store width calculations
+                   clear cl xl yl 
+                   
+                      % Store coordinates in regular order
+                      thickness(j,6:7)=[coord(1,1),coord(1,2)];
+                      thickness(j,8:9)=[coord(2,1),coord(2,2)];
+                      thickness(j,10:11)=[coord(3,1),coord(3,2)];
+                      thickness(j,12:13)=[coord(4,1),coord(4,2)];
+                    
+                   % find secondary thickness
+                   k_min=abs(diff(coord))==min(min(abs(diff(coord))));
+                   k_tot=sum(k_min+k,2); % zeros is the variable we want
+                   clear k_min 
+
+                   if k_tot(1)==0
+                   xl=coord(1,1)-coord(2,1); % length in x
+                   yl=coord(1,2)-coord(2,2); % length in y          
+                   cl=sqrt(xl^2 + yl^2); % WIDTH
+
+                   thickness(j,2)=cl; % store width calculations
+                   clear cl xl yl 
+                   elseif k_tot(3)==0
+                   
+                   xl=coord(3,1)-coord(4,1); % length in x
+                   yl=coord(3,2)-coord(4,2); % length in y          
+                   cl=sqrt(xl^2 + yl^2); % WIDTH
+
+                   thickness(j,2)=cl; % store width calculations
+                   clear cl xl yl     
+                                  
+                   end
+                   
+                                
+             elseif k(3,1)==1 % 3rd pair of coordinates are main thickness
+                 nr_of_splits(j,2)=3; % store 3rd set is largest
+                 
+          for m=3:-2:1   
+          xl=coord(m,1)-coord(m+1,1); % length in x
+          yl=coord(m,2)-coord(m+1,2); % length in y          
+          cl=sqrt(xl^2 + yl^2); % WIDTH
+          
+          ord=[2,NaN,1];
+          thickness(j,ord(m))=cl; % store width calculations
+          clear cl xl yl 
+          end; clear m ord
+          
+          % Store coordinates in regular order
+          thickness(j,6:7)=[coord(1,1),coord(1,2)];
+          thickness(j,8:9)=[coord(2,1),coord(2,2)];
+          thickness(j,10:11)=[coord(3,1),coord(3,2)];
+          thickness(j,12:13)=[coord(4,1),coord(4,2)];    
+                 
+                 
+             end; clear k
+            
+        end
+    %% END EVEN
+    %% ODD = 3 coordinates    
+    elseif l(1)==1 
         %display(j) displays section numbers with three points
         
         % find largest difference between points to choose as main thickness.
@@ -107,7 +199,7 @@ for j=1:1:length(files)
           thickness(j,10:11)=[coord(3,1),coord(3,2)];
 
         elseif k(2,1)==1 % 2nd set of coordinates are main thickness
-          nr_of_splits(j,2)=2; % store first set is largest
+          nr_of_splits(j,2)=2; % store 2nd pair is largest
           for m=2:-1:1
           xl=coord(m,1)-coord(m+1,1); % length in x
           yl=coord(m,2)-coord(m+1,2); % length in y
@@ -122,7 +214,7 @@ for j=1:1:length(files)
           thickness(j,6:7)=[coord(1,1),coord(1,2)];
           thickness(j,8:9)=[coord(2,1),coord(2,2)];
           thickness(j,10:11)=[coord(3,1),coord(3,2)];
-         
+%% END ODD         
         end
     end     
 end

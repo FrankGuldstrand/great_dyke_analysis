@@ -75,18 +75,28 @@ subplot(2,2,2) % Plot of Width
          xlim([0 length(thickness)])
          
  subplot(2,2,4) % Plot of Dyke Outline and Sections
-        for j=1:1:length(files) % go through all files
+       for j=1:1:length(files) % go through all files
             hold on
             
             for i= 1:1:length(data{j}) % for the length of coordinates in Data
                 plot([data{j}(i,1)],[data{j}(i,2)],'.','Color',cmapcustom(thickness(j,4),1:3),'MarkerSize',12) % Dyke Outline
             end
             
-            if nr_of_splits(j,2)==1 % No split
+            if nr_of_splits(j,1)==0 % No split
+            plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k');
+            
+            elseif nr_of_splits(j,1)==1 % split
+                if nr_of_splits(j,2)==1 % 1st set largest
+                    plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
+                elseif nr_of_splits(j,2)==2 %2nd pair largest
+                    plot([thickness(j,8),thickness(j,10)],[thickness(j,9),thickness(j,11)],'k');
+                end
+      
+            elseif nr_of_splits(j,1)==2 % split with gap
+                
             plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
-            elseif nr_of_splits(j,2)==2 % split
-            plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
-            plot([thickness(j,8),thickness(j,10)],[thickness(j,9),thickness(j,11)],'k'); 
+            plot([thickness(j,10),thickness(j,12)],[thickness(j,11),thickness(j,13)],'k'); 
+
             end
             
             % ADD PART ID AND SECTION ID
@@ -104,6 +114,7 @@ subplot(2,2,2) % Plot of Width
         hold off
         clearvars -except thickness files data lsid nr_of_splits path cmapcustom uniq
 %% LARGE FIGURE OUTLINE %%
+
  figure(2) % Plot of Dyke Outline and Sections
 
        for j=1:1:length(files) % go through all files
@@ -113,11 +124,21 @@ subplot(2,2,2) % Plot of Width
                 plot([data{j}(i,1)],[data{j}(i,2)],'.','Color',cmapcustom(thickness(j,4),1:3),'MarkerSize',12) % Dyke Outline
             end
             
-            if nr_of_splits(j,2)==1 % No split
+            if nr_of_splits(j,1)==0 % No split
+            plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k');
+            
+            elseif nr_of_splits(j,1)==1 % split
+                if nr_of_splits(j,2)==1 % 1st set largest
+                    plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
+                elseif nr_of_splits(j,2)==2 %2nd pair largest
+                    plot([thickness(j,8),thickness(j,10)],[thickness(j,9),thickness(j,11)],'k');
+                end
+      
+            elseif nr_of_splits(j,1)==2 % split with gap
+                
             plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
-            elseif nr_of_splits(j,2)==2 % split
-            plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
-            plot([thickness(j,8),thickness(j,10)],[thickness(j,9),thickness(j,11)],'k'); 
+            plot([thickness(j,10),thickness(j,12)],[thickness(j,11),thickness(j,13)],'k'); 
+
             end
             
             % ADD PART ID AND SECTION ID
@@ -135,20 +156,42 @@ subplot(2,2,2) % Plot of Width
         hold off
 %% REMOVE OVERLAP AREAS OR Identify different Sections
     % Overlap identification
-    tmp1=diff(thickness(:,3)) < 1; 
-    % find the sections which are on the same position, makes vector 1 element shorter
     
-    tmp2=logical([0;tmp1]);
-    % add 0 at start of vector to make it as long as as thickness
+    % ending distance for each part
+    for k=1:uniq(end)
+        idx=thickness(:,4)==k;
+        thick_tmp=thickness(idx,:);
+        stop_d(k)=max(thick_tmp(:,3));
+        over_cell{k}=zeros(length(thick_tmp),1);
+    end; clear idx thick_tmp
+   
+    for k=1:uniq(end)
+    idx=thickness(:,4)==k;
+    thick_tmp=thickness(idx,:);
     
-    tmp3=logical([tmp1;0]);
-    % add 0 at end of vector to make it as long as as thickness
-    overlap=logical(tmp2+tmp3); 
-    % add the two vectors to get full overlap
-    % use this to test:
+        if k==1 % start
+        tmp2=thick_tmp(:,3)>=stop_d(k+1);
+        over_cell{k}=tmp2;
+        
+        overlap=over_cell{k};
+        elseif k==uniq(end) % end
+        tmp1=thick_tmp(:,3)<=stop_d(k-1);
+        over_cell{k}=tmp1;
+        overlap=[overlap;over_cell{k}];
+        else % middle
+        tmp1=thick_tmp(:,3)<=stop_d(k-1);           
+        tmp2=thick_tmp(:,3)>=stop_d(k+1);
+        over_cell{k}=tmp1+tmp2;
+        overlap=[overlap;over_cell{k}];
+        end
+        
+        
+    end; clear tmp1 tmp2
+    
     figure(3)
     plot(overlap); hold on; plot(thickness(:,3)./max(thickness(:,3)))
     
+    overlap=logical(overlap);
     clear tmp1 tmp2 tmp3
     % Remove Overlap
     thicktmp=thickness(:,1:5); % create temp vector of thickness
