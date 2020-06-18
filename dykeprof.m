@@ -10,16 +10,6 @@ section_distance % calculates distance perpendicular to sections from NE section
 uniq=unique(thickness(:,4)); % Unique profile sections
 cmapcustom=rand(length(uniq),3); % Random colormap for different sections
 
- %  Sorting according to distance and round % % %
-    
- % sorts according to distance from starting section
-    %thickness=sortrows(thickness,3);
-    
-    % rounds the distance to integers 
-    %thickness(:,3)=round(thickness(:,3));
-    
-    % Removes the column with coordinates
-    % thickness(:,3:6)=[]; % Removes column with coordinates
 %% THICKNESS ARRAY INFO %%
 %{
    Col  1 main thickness
@@ -41,7 +31,7 @@ cmapcustom=rand(length(uniq),3); % Random colormap for different sections
 % Section distance plot (3)
 % plot of dyke outline (4)
 
-figure
+figure (1)
 subplot(2,2,1) % Multi-Plot
 
     % Bins for histogram according Freedman-Diaconis rule for entire dyke
@@ -111,12 +101,12 @@ subplot(2,2,2) % Plot of Width
         end
         grid on; box on; axis equal
         title('dyke outline')
-
-        clearvars -except thickness files data lsid nr_of_splits path cmapcustom
+        hold off
+        clearvars -except thickness files data lsid nr_of_splits path cmapcustom uniq
 %% LARGE FIGURE OUTLINE %%
- figure(3) % Plot of Dyke Outline and Sections
+ figure(2) % Plot of Dyke Outline and Sections
 
-        for j=1:1:length(files) % go through all files
+       for j=1:1:length(files) % go through all files
             hold on
             
             for i= 1:1:length(data{j}) % for the length of coordinates in Data
@@ -142,6 +132,7 @@ subplot(2,2,2) % Plot of Width
         end
         grid on; box on; axis equal
         title('dyke outline')
+        hold off
 %% REMOVE OVERLAP AREAS OR Identify different Sections
     % Overlap identification
     tmp1=diff(thickness(:,3)) < 1; 
@@ -155,6 +146,7 @@ subplot(2,2,2) % Plot of Width
     overlap=logical(tmp2+tmp3); 
     % add the two vectors to get full overlap
     % use this to test:
+    figure(3)
     plot(overlap); hold on; plot(thickness(:,3)./max(thickness(:,3)))
     
     clear tmp1 tmp2 tmp3
@@ -167,7 +159,7 @@ subplot(2,2,2) % Plot of Width
 %cmapcustom=rand(length(uniq),3); % Random colormap for different sections
 
 avethick=zeros(1,length(uniq)); % storing variable for average thicknesses
-figure
+figure (4)
 for i =1:length(uniq)
 
 idx=thickness(:,4)==uniq(i); % Selection of section to plot
