@@ -9,9 +9,9 @@ This analysis is to quantitatively assess the geometry of dykes. We are using a 
 In detail: segment length, segment thickness, (tip geometry), (segment overlap), (segment relay zones),...
 NB! Parameters in brakets are not implemented yet.
 
-![Dyke Overview](overview_plot.pdf)
-![Dyke detailed](dyke_outline.pdf)
-![Dyke Thickness](Dyke_Thickness_along_length.pdf)
+![Dyke Overview](overview_plot.jpeg)
+![Dyke detailed](dyke_outline.jpeg)
+![Dyke Thickness](Dyke_Thickness_along_length.jpeg)
 
 ## License
 

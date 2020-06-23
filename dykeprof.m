@@ -114,6 +114,9 @@ subplot(2,2,2) % Plot of Width
         hold off
         orient(fig1,'landscape')
         print('overview_plot.pdf','-dpdf','-bestfit')
+        
+        orient(fig1,'portrait')
+        print('overview_plot.jpeg','-djpeg')
         clearvars -except thickness files data lsid nr_of_splits path cmapcustom uniq
 %% LARGE FIGURE OUTLINE %%
 
@@ -169,6 +172,9 @@ subplot(2,2,2) % Plot of Width
         xlabel('X [m]')
         ylabel('Y [m]')
         print('Dyke_Outline.pdf','-dpdf','-fillpage')
+        
+        orient(fig2,'portrait')
+        print('Dyke_Outline.jpeg','-djpeg')
         hold off
 %% REMOVE OVERLAP AREAS OR Identify different Sections
     % Overlap identification
@@ -241,3 +247,5 @@ grid on; box on
 
 orient(fig4,'landscape')
         print('Dyke_Thickness_along_length.pdf','-dpdf','-fillpage')
+        orient(fig4,'portrait')
+        print('Dyke_Thickness_along_length.jpeg','-djpeg')
