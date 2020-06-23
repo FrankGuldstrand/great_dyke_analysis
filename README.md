@@ -10,7 +10,7 @@ In detail: segment length, segment thickness, (tip geometry), (segment overlap),
 NB! Parameters in brakets are not implemented yet.
 
 ![Dyke Overview](overview_plot.jpeg)
-![Dyke detailed](dyke_outline.jpeg)
+![Dyke Detailed](Dyke_Outline.jpeg)
 ![Dyke Thickness](Dyke_Thickness_along_length.jpeg)
 
 ## License
