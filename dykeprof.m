@@ -31,7 +31,7 @@ cmapcustom=rand(length(uniq),3); % Random colormap for different sections
 % Section distance plot (3)
 % plot of dyke outline (4)
 
-figure (1)
+fig1=figure;
 subplot(2,2,1) % Multi-Plot
 
     % Bins for histogram according Freedman-Diaconis rule for entire dyke
@@ -112,10 +112,12 @@ subplot(2,2,2) % Plot of Width
         grid on; box on; axis equal
         title('dyke outline')
         hold off
+        orient(fig1,'landscape')
+        print('overview_plot.pdf','-dpdf','-bestfit')
         clearvars -except thickness files data lsid nr_of_splits path cmapcustom uniq
 %% LARGE FIGURE OUTLINE %%
 
- figure(2) % Plot of Dyke Outline and Sections
+ fig2=figure; % Plot of Dyke Outline and Sections
 
        for j=1:1:length(files) % go through all files
             hold on
@@ -151,8 +153,22 @@ subplot(2,2,2) % Plot of Width
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             end 
         end
-        grid on; box on; axis equal
+       
         title('dyke outline')
+        orient(fig2,'landscape')
+        xlim([min(thickness(:,6)),max(thickness(:,6))+100])
+        set(gca,'XTick',min(thickness(:,6)):100:max(thickness(:,6))+100)     
+        set(gca,'XTickLabel',min(thickness(:,6))-min(thickness(:,6))...
+            :100:max(thickness(:,6))+100-min(thickness(:,6)))
+        
+        ylim([min(thickness(:,7)),max(thickness(:,7))])
+        set(gca,'YTick',min(thickness(:,7)):100:max(thickness(:,7))+100)     
+        set(gca,'YTickLabel',min(thickness(:,7))-min(thickness(:,7))...
+            :100:max(thickness(:,7))+100-min(thickness(:,7)))
+        grid on; box on; pbaspect([1 1 1])
+        xlabel('X [m]')
+        ylabel('Y [m]')
+        print('Dyke_Outline.pdf','-dpdf','-fillpage')
         hold off
 %% REMOVE OVERLAP AREAS OR Identify different Sections
     % Overlap identification
@@ -188,7 +204,7 @@ subplot(2,2,2) % Plot of Width
         
     end; clear tmp1 tmp2
     
-    figure(3)
+    fig3=figure;
     plot(overlap); hold on; plot(thickness(:,3)./max(thickness(:,3)))
     
     overlap=logical(overlap);
@@ -202,7 +218,8 @@ subplot(2,2,2) % Plot of Width
 %cmapcustom=rand(length(uniq),3); % Random colormap for different sections
 
 avethick=zeros(1,length(uniq)); % storing variable for average thicknesses
-figure (4)
+
+fig4=figure;
 for i =1:length(uniq)
 
 idx=thickness(:,4)==uniq(i); % Selection of section to plot
@@ -221,3 +238,6 @@ xlim([0,thickness(end,3)])
 ylabel('thickness (m)')
 xlabel('distance (m)')
 grid on; box on
+
+orient(fig4,'landscape')
+        print('Dyke_Thickness_along_length.pdf','-dpdf','-fillpage')
