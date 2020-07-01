@@ -121,7 +121,15 @@ subplot(2,2,2) % Plot of Width
 %% LARGE FIGURE OUTLINE %%
 
  fig2=figure; % Plot of Dyke Outline and Sections
-
+        fill(cell2mat(P1line(:,1)), cell2mat(P1line(:,2)), 'b');
+        hold on
+        fill(cell2mat(P2line(:,1)), cell2mat(P2line(:,2)),'r');
+        fill(cell2mat(P3line(:,1)), cell2mat(P3line(:,2)), 'b');
+        fill(cell2mat(P4line(:,1)), cell2mat(P4line(:,2)), 'r');
+        fill(cell2mat(P5line(:,1)), cell2mat(P5line(:,2)), 'b');
+        fill(cell2mat(P6line(:,1)), cell2mat(P6line(:,2)), 'r');
+        fill(cell2mat(P7line(:,1)), cell2mat(P7line(:,2)), 'b');
+        fill(cell2mat(P8line(:,1)), cell2mat(P8line(:,2)), 'r');
        for j=1:1:length(files) % go through all files
             hold on
             
@@ -151,7 +159,7 @@ subplot(2,2,2) % Plot of Width
             str=['P',num2str(thickness(j,4)),'S',num2str(thickness(j,5))];   
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             
-            elseif mod(j,50)==0 % Sets increment for ID-text in plot
+            elseif mod(j,10)==0 % Sets increment for ID-text in plot
             str=['P',num2str(thickness(j,4)),'S',num2str(thickness(j,5))];   
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             end 
