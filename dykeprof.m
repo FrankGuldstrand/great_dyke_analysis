@@ -245,6 +245,7 @@ subplot(2,2,2) % Plot of Width
 %cmapcustom=rand(length(uniq),3); % Random colormap for different sections
 
 avethick=zeros(1,length(uniq)); % storing variable for average thicknesses
+stdthick=zeros(1,length(uniq)); % storing variable for standard deviation
 
 fig4=figure;
 for i =1:length(uniq)
@@ -252,6 +253,7 @@ for i =1:length(uniq)
 idx=thickness(:,4)==uniq(i); % Selection of section to plot
 
 avethick(i)=nanmean(thicktmp(idx,1)); % Calculate thickness of section without Overlap
+stdthick(i)=nanstd(thicktmp(idx,1));
 
 hold on
 % Plots sections
@@ -259,6 +261,9 @@ plot(thickness(idx,3),thickness(idx,1),'color',cmapcustom(i,1:3),'LineWidth',2)
 
 % Plots average thickness of Sections
 plot([min(thicktmp(idx,3)), max(thicktmp(idx,3))],[avethick(i), avethick(i)],'.-k','LineWidth',1)
+% Plots average thickness of Sections
+plot([min(thicktmp(idx,3)), max(thicktmp(idx,3))],[avethick(i)+stdthick(i), avethick(i)+stdthick(i)],'--k','LineWidth',1)
+plot([min(thicktmp(idx,3)), max(thicktmp(idx,3))],[avethick(i)-stdthick(i), avethick(i)-stdthick(i)],'--k','LineWidth',1)
 
 end
 xlim([0,thickness(end,3)])
