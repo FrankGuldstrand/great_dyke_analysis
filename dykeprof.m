@@ -1,7 +1,12 @@
 %% Analyzing the thickness of the Great Dyke in the mapped sections 
 
 % By Frank Guldstrand 2019
-clear vars; clc; close all
+clear all; clear vars; clc; close all
+
+% CHOOSE PATH!
+%path='full_data_1_great_dyke/'; % great dyke data
+path='full_data_2_sosa_dyke/'; % sosa dyke data
+
 
 load_data % loads data in separate script
 calculate_thickness % calculates the thickness of sections output = thickness
@@ -75,6 +80,7 @@ subplot(2,2,2) % Plot of Width
          xlim([0 length(thickness)])
          
  subplot(2,2,4) % Plot of Dyke Outline and Sections
+        thickness=thickness(~isnan(thickness(:,3)),:);
        for j=1:1:length(files) % go through all files
             hold on
             
@@ -104,7 +110,7 @@ subplot(2,2,2) % Plot of Width
             str=['P',num2str(thickness(j,4)),'S',num2str(thickness(j,5))];   
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             
-            elseif mod(j,50)==0 % Sets increment for ID-text in plot
+            elseif mod(j,20)==0 % Sets increment for ID-text in plot
             str=['P',num2str(thickness(j,4)),'S',num2str(thickness(j,5))];   
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             end 
@@ -122,25 +128,37 @@ subplot(2,2,2) % Plot of Width
 
  fig2=figure; % Plot of Dyke Outline and Sections
 
-       for j=1:1:length(files) % go through all files
+       for j=1:1:length(files)-1 % go through all files
+           if isnan(thickness(j,3))== 1                   
+               continue               
+           end
+           
             hold on
             
-            for i= 1:1:length(data{j}) % for the length of coordinates in Data
-                plot([data{j}(i,1)],[data{j}(i,2)],'.','Color',cmapcustom(thickness(j,4),1:3),'MarkerSize',12) % Dyke Outline
+            for i= 1:1:length(data{j}) % for the length of coordinates in Data 
+                hold on
+                plot([data{j}(i,1)],[data{j}(i,2)],'.','Color',...
+                cmapcustom(thickness(j,4),1:3),'MarkerSize',12) % Dyke Outline
             end
             
+            %%% NO SPLIT
             if nr_of_splits(j,1)==0 % No split
+               
             plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k');
             
+            %%% SPLIT
             elseif nr_of_splits(j,1)==1 % split
+                
                 if nr_of_splits(j,2)==1 % 1st set largest
+
                     plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
                 elseif nr_of_splits(j,2)==2 %2nd pair largest
+  
                     plot([thickness(j,8),thickness(j,10)],[thickness(j,9),thickness(j,11)],'k');
                 end
       
             elseif nr_of_splits(j,1)==2 % split with gap
-                
+
             plot([thickness(j,6),thickness(j,8)],[thickness(j,7),thickness(j,9)],'k'); 
             plot([thickness(j,10),thickness(j,12)],[thickness(j,11),thickness(j,13)],'k'); 
 
@@ -151,7 +169,7 @@ subplot(2,2,2) % Plot of Width
             str=['P',num2str(thickness(j,4)),'S',num2str(thickness(j,5))];   
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             
-            elseif mod(j,50)==0 % Sets increment for ID-text in plot
+            elseif mod(j,20)==0 % Sets increment for ID-text in plot
             str=['P',num2str(thickness(j,4)),'S',num2str(thickness(j,5))];   
             text(thickness(j,6),thickness(j,7),str,'FontSize',10,'Color','Magenta')
             end 
@@ -159,7 +177,8 @@ subplot(2,2,2) % Plot of Width
        
         title('dyke outline')
         orient(fig2,'landscape')
-        xlim([min(thickness(:,6)),max(thickness(:,6))+100])
+        
+        xlim([min(thickness(:,6)),max(thickness(:,6))])
         set(gca,'XTick',min(thickness(:,6)):100:max(thickness(:,6))+100)     
         set(gca,'XTickLabel',min(thickness(:,6))-min(thickness(:,6))...
             :100:max(thickness(:,6))+100-min(thickness(:,6)))
@@ -168,7 +187,9 @@ subplot(2,2,2) % Plot of Width
         set(gca,'YTick',min(thickness(:,7)):100:max(thickness(:,7))+100)     
         set(gca,'YTickLabel',min(thickness(:,7))-min(thickness(:,7))...
             :100:max(thickness(:,7))+100-min(thickness(:,7)))
+        
         grid on; box on; pbaspect([1 1 1])
+        axis equal
         xlabel('X [m]')
         ylabel('Y [m]')
         print('Dyke_Outline.pdf','-dpdf','-fillpage')

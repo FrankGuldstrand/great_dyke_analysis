@@ -5,7 +5,8 @@
 clear vars; 
 
 % % Identifying paths for data 
-path='FullData/'; % Text string path to data (keep it nice and clean)
+%path='FullData/'; % Text string path to data (keep it nice and clean)
+
 files=struct2table(dir(path));  % cell with list of files in FullData directory
 files=files(3:end,:);
 files = natsortfiles(files.name);  % Use dependencey natsortfiles to sort
@@ -18,6 +19,9 @@ files = natsortfiles(files.name);  % Use dependencey natsortfiles to sort
 % data: col1 = x col2 = y col3 = z
 
 for j=1:length(files) % loop over files starting from 3 because of dir
+    if j==1
+        disp(files{j})   
+    end
     sections=dlmread([path,files{j}],'\t',1,0); 
     % read data with space as delimiter, remove first row, keep all
     % columns.
